@@ -11,7 +11,7 @@ Pins and events are unified - a pin with a date shows on both the map and calend
 - **Framework**: Next.js 16 (App Router)
 - **Map**: Leaflet + React-Leaflet + OpenStreetMap (free)
 - **Database**: Supabase PostgreSQL (free tier)
-- **Hosting**: Vercel (free tier) - NOT YET DEPLOYED
+- **Hosting**: Vercel (free tier) - LIVE at https://pin-map-phi.vercel.app/
 - **Styling**: Tailwind CSS
 - **Email**: Resend (not yet configured)
 
