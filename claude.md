@@ -53,7 +53,10 @@ ADMIN_EMAIL=
 
 ## Admin Access
 - URL: `/admin`
-- Password: `transpride`
+- Password: set via the `ADMIN_PASSWORD` env var. Never written down here —
+  this file is public.
+- Logging in sets a signed, httpOnly session cookie; `DELETE /api/pins`,
+  `PUT /api/config` and `GET /api/stats` all require it (`src/lib/adminAuth.ts`).
 - Features: Legend editor, site settings, pin moderation, events moderation, stats
 
 ## Key Files
