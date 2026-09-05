@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { isAdmin, unauthorized } from "@/lib/adminAuth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
@@ -13,6 +14,8 @@ export async function GET() {
 }
 
 export async function PUT(req: NextRequest) {
+  if (!isAdmin(req)) return unauthorized();
+
   const body = await req.json();
   const { id, site_name, theme, legend } = body;
 

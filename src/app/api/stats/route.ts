@@ -1,7 +1,11 @@
 import { supabase } from "@/lib/supabase";
+import { isAdmin, unauthorized } from "@/lib/adminAuth";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+// Visitor analytics are admin-only - they expose per-visitor hashes.
+export async function GET(req: NextRequest) {
+  if (!isAdmin(req)) return unauthorized();
+
   const [pinsRes, viewsRes] = await Promise.all([
     supabase.from("pins").select("*"),
     supabase.from("page_views").select("*"),

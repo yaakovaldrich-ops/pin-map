@@ -24,7 +24,8 @@ https://github.com/yaakovaldrich-ops/pin-map
 ## Database (Supabase)
 - **Project ID**: mstfdemxpuuascovfqib
 - **URL**: https://mstfdemxpuuascovfqib.supabase.co
-- **Anon Key**: sb_secret_R04bVG4MjifZJSddOVIx_w_43upty-0
+- **Keys**: never recorded here. This file is committed to a public repo.
+  Real values live only in `.env.local` (gitignored) and Vercel's env settings.
 
 ### Tables
 1. **pins** - Stores both location pins and events
@@ -36,13 +37,18 @@ https://github.com/yaakovaldrich-ops/pin-map
 3. **page_views** - Analytics tracking
 
 ## Environment Variables Needed
+
+Names only - never paste real values into this file, it is public.
+
 ```
-NEXT_PUBLIC_SUPABASE_URL=https://mstfdemxpuuascovfqib.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_secret_R04bVG4MjifZJSddOVIx_w_43upty-0
-ADMIN_PASSWORD=transpride
-RESEND_API_KEY=re_xxxxx (not yet set up)
-RESEND_FROM_EMAIL=onboarding@resend.dev
-ADMIN_EMAIL=yaakov.aldrich@gmail.com
+SUPABASE_URL=              # https://<project-id>.supabase.co
+SUPABASE_SECRET_KEY=       # sb_secret_... SERVER ONLY, bypasses RLS.
+                           # Must NOT have a NEXT_PUBLIC_ prefix: Next.js
+                           # inlines those into the browser bundle.
+ADMIN_PASSWORD=            # also the signing secret for the admin session cookie
+RESEND_API_KEY=            # not yet set up
+RESEND_FROM_EMAIL=
+ADMIN_EMAIL=
 ```
 
 ## Admin Access

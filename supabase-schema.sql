@@ -34,17 +34,29 @@ alter table pins enable row level security;
 alter table site_config enable row level security;
 alter table page_views enable row level security;
 
--- Policies: anyone can read pins and config, anyone can insert pins and page_views
-create policy "Anyone can read pins" on pins for select using (true);
-create policy "Anyone can insert pins" on pins for insert with check (true);
+-- Policies.
+--
+-- The app reaches Supabase only through its own /api routes using a secret
+-- key, which bypasses RLS - so these policies are defence in depth. They are
+-- what protects the data if a publishable key is ever used from the browser.
+-- Grant the anon role only what an anonymous visitor legitimately needs:
+-- read pins/config, submit a pin, record a page view. Nothing else.
+--
+-- Re-running this file? Drop the old wide-open policies first:
+--   drop policy if exists "Anyone can update config" on site_config;
+--   drop policy if exists "Anyone can delete pins"  on pins;
+--   drop policy if exists "Anyone can read views"   on page_views;
+
+create policy "Anyone can read pins"   on pins        for select using (true);
+create policy "Anyone can insert pins" on pins        for insert with check (true);
 create policy "Anyone can read config" on site_config for select using (true);
 create policy "Anyone can insert views" on page_views for insert with check (true);
-create policy "Anyone can read views" on page_views for select using (true);
 
--- For admin operations (update/delete), use the service role key server-side
--- or create policies that check a custom claim
-create policy "Anyone can update config" on site_config for update using (true);
-create policy "Anyone can delete pins" on pins for delete using (true);
+-- Deliberately NOT granted to anon:
+--   * delete/update on pins        - admin only, via the authenticated API route
+--   * update on site_config        - admin only, via the authenticated API route
+--   * select on page_views         - visitor hashes; admin analytics only
+-- With RLS enabled and no matching policy, those operations are denied.
 
 -- =============================================
 -- MIGRATION: Add event support to pins table

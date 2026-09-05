@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { sendEventNotification } from "@/lib/email";
+import { isAdmin, unauthorized } from "@/lib/adminAuth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -60,7 +61,12 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  if (!isAdmin(req)) return unauthorized();
+
   const { id } = await req.json();
+  if (typeof id !== "string" || !id) {
+    return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  }
 
   const { error } = await supabase.from("pins").delete().eq("id", id);
 
